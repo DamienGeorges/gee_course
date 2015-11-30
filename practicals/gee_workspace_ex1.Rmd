@@ -1,0 +1,404 @@
+---
+title: "GEE Workspace tutorial - Exporting the latest 16-days MODIS NDVI keeping only high quality observation over Spain"
+author: "Damien g."
+date: "26/11/2015"
+output: html_document
+---
+
+## Tutorial walkthrough
+
+### Note
+
+This is a good idea to think to save the state of your workspace time to time.
+
+### Load MODIS 16 Days NDVI product 
+
+Click on *add data*  
+
+![](../materials/figures/pract_workspace/Screenshot1.png)
+
+Search for *MODIS 16-Day*, find the *NDVI product* and click on *open in workspace*  
+
+![](../materials/figures/pract_workspace/Screenshot05.png)
+
+Define the scale of visualization (i.e. 0-1) and click on *save* then *apply*.  
+
+![](../materials/figures/pract_workspace/Screenshot06.png)
+
+### Load MODIS 16 Days quality band product
+
+Click on *add data*  
+Search for *MODIS quality*, find the *MCD43A2 BRDF-Albedo Quality 16-Day Global 500m* 
+
+![](../materials/figures/pract_workspace/Screenshot12.png)
+
+Then click on on the link to the provider website to get information of how is structured this product.  
+
+![](../materials/figures/pract_workspace/Screenshot13.png)
+
+Come back to the product description in the catalog and click on *open in workspace*   
+
+You can then choose to visualize the *BRDF_Albedo_Quality* band on a green (good quality) - red (bad quality)  with a 0.5 opacity to spot the area of high data quality.
+
+![](../materials/figures/pract_workspace/Screenshot11.png)
+
+
+### Create a mask to filter out all non high quality points
+
+Here we want to filter out all the not high quality points. The mask function will be used as a opacity level. Cause our quality is coded as 0: high quality 1:lower quality, we will have to transform it to be coded as 1: HQ 0: LQ.   
+To do so, click on *add computation*, then *Expression*  
+
+![](../materials/figures/pract_workspace/Screenshot16.png)
+
+Then select the *MCD43A2 BRDF-Albedo Quality 16-Day Global 500m* as reference (here called 'img1')
+
+![](../materials/figures/pract_workspace/Screenshot17.png)
+
+And keep only the *BRDF_Albedo_Quality* band.
+
+![](../materials/figures/pract_workspace/Screenshot18.png)
+
+Define the function **1 - img1** that will lead to the targeted transformation, define the custom 0 - 1 scale and a 0.5 opacity value.  
+
+![](../materials/figures/pract_workspace/Screenshot19.png)
+
+
+### Apply the mask
+
+Now our mask is correctly defined we will apply it to our *NDVI image*.  
+Click on *add computation*, then *Apply Mask*
+
+![](../materials/figures/pract_workspace/Screenshot20.png)
+
+Then select *MODIS 16 days NDVI* as reference and mask it with the *Computed Layer: Expression*. You can choose also to apply a custom color scale and palette.
+
+![](../materials/figures/pract_workspace/Screenshot30.png)
+
+Click *Apply* and *Save*.
+
+### Export the filtered MODIS 16 days NDIVI image
+
+Now we have the image we wanted to produce, we will export it. Start by zooming on your area of interest (here Spain) and deactivate the visualization of all layers except the one you just produced.
+
+![](../materials/figures/pract_workspace/Screenshot24.png)
+
+Click on the product in the list of layers in the left panel and then click on the *downloading arrow*
+
+![](../materials/figures/pract_workspace/Screenshot25.png)
+
+Click on *Region > Draw Rectangle* and draw a rectangle around Spain.
+
+![](../materials/figures/pract_workspace/Screenshot26.png)
+
+Draw a rectangle around Spain, select the wanted coordinate system and resolution and click on *download*
+
+![](../materials/figures/pract_workspace/Screenshot27.png)
+
+A downloading window should pop-up!
+
+![](../materials/figures/pract_workspace/Screenshot28.png)
+
+Click *ok* ... You are done !!!
+
+**Note**: In case you didn't manage to make it or if you want to compare you results to mine you can use one of the following sections.
+
+## Link to the final workspace
+
+Here is the [link to the final workspace](https://explorer.earthengine.google.com/#workspace/GaqNPpCUUkl)
+
+## JSON version of the final workspace
+
+Here is the Json version of the final workspace. You can copy this lines and import them in your workspace.
+
+```json
+{
+{
+  "viewport": {
+    "zoom": 6,
+    "lat": 40.09488212232122,
+    "lng": -5.03173828125
+  },
+  "name": "",
+  "classmodel": [],
+  "polylayers": [],
+  "datalayers": [
+    {
+      "title": "Computed layer: Apply Mask",
+      "originaltitle": null,
+      "overlayvisible": true,
+      "vis": {
+        "opacity": 1,
+        "bands": [
+          "NDVI"
+        ],
+        "min": 0,
+        "palette": [
+          "FFFFFF",
+          "CE7E45",
+          "DF923D",
+          "F1B555",
+          "FCD163",
+          "99B718",
+          "74A901",
+          "66A000",
+          "529400",
+          "3E8601",
+          "207401",
+          "056201",
+          "004C00",
+          "023B01",
+          "012E01",
+          "011D01",
+          "011301"
+        ],
+        "format": "png"
+      },
+      "layermode": "advisory-mode",
+      "datatype": "computed",
+      "computations": [
+        {
+          "title": "1. Apply Mask",
+          "operation": "ApplyMask",
+          "layer": {
+            "image": {
+              "type": "Invocation",
+              "arguments": {
+                "id": "MODIS/MCD43A4_NDVI/MCD43A4_005_2015_11_01"
+              },
+              "functionName": "Image.load"
+            },
+            "bands": [
+              "NDVI"
+            ],
+            "title": "MODIS 16-Day NDVI"
+          },
+          "type": "raster",
+          "mask": {
+            "image": {
+              "type": "CompoundValue",
+              "scope": [
+                [
+                  "0",
+                  {
+                    "type": "Invocation",
+                    "arguments": {
+                      "value": 0
+                    },
+                    "functionName": "Image.constant"
+                  }
+                ],
+                [
+                  "1",
+                  {
+                    "type": "Invocation",
+                    "arguments": {
+                      "image": {
+                        "type": "ValueRef",
+                        "value": "0"
+                      },
+                      "mask": {
+                        "type": "ValueRef",
+                        "value": "0"
+                      }
+                    },
+                    "functionName": "Image.mask"
+                  }
+                ],
+                [
+                  "2",
+                  {
+                    "type": "Invocation",
+                    "arguments": {
+                      "id": "MODIS/MCD43A2/MCD43A2_005_2015_11_01"
+                    },
+                    "functionName": "Image.load"
+                  }
+                ],
+                [
+                  "3",
+                  [
+                    "BRDF_Albedo_Quality"
+                  ]
+                ],
+                [
+                  "4",
+                  {
+                    "type": "Invocation",
+                    "arguments": {
+                      "input": {
+                        "type": "ValueRef",
+                        "value": "2"
+                      },
+                      "bandSelectors": {
+                        "type": "ValueRef",
+                        "value": "3"
+                      }
+                    },
+                    "functionName": "Image.select"
+                  }
+                ],
+                [
+                  "5",
+                  [
+                    "DEFAULT_EXPRESSION_IMAGE",
+                    "img1"
+                  ]
+                ],
+                [
+                  "6",
+                  {
+                    "type": "Invocation",
+                    "arguments": {
+                      "expression": "1 - img1",
+                      "argName": "DEFAULT_EXPRESSION_IMAGE",
+                      "vars": {
+                        "type": "ValueRef",
+                        "value": "5"
+                      }
+                    },
+                    "functionName": "Image.parseExpression"
+                  }
+                ],
+                [
+                  "7",
+                  {
+                    "type": "Invocation",
+                    "arguments": {
+                      "DEFAULT_EXPRESSION_IMAGE": {
+                        "type": "ValueRef",
+                        "value": "1"
+                      },
+                      "img1": {
+                        "type": "ValueRef",
+                        "value": "4"
+                      }
+                    },
+                    "function": {
+                      "type": "ValueRef",
+                      "value": "6"
+                    }
+                  }
+                ]
+              ],
+              "value": {
+                "type": "ValueRef",
+                "value": "7"
+              }
+            },
+            "bands": [
+              "constant"
+            ],
+            "title": "Computed layer: Expression"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Computed layer: Expression",
+      "originaltitle": null,
+      "overlayvisible": false,
+      "vis": {
+        "opacity": 0.51,
+        "bands": [
+          "constant"
+        ],
+        "min": 0,
+        "palette": [
+          "ff4913",
+          "47ff19"
+        ],
+        "format": "png"
+      },
+      "layermode": "advisory-mode",
+      "datatype": "computed",
+      "computations": [
+        {
+          "title": "1. Custom Expression",
+          "operation": "Expression",
+          "layers": {
+            "img1": {
+              "image": {
+                "type": "Invocation",
+                "arguments": {
+                  "id": "MODIS/MCD43A2/MCD43A2_005_2015_11_01"
+                },
+                "functionName": "Image.load"
+              },
+              "bands": [
+                "BRDF_Albedo_Quality"
+              ],
+              "title": "MCD43A2 BRDF-Albedo Quality 16-Day Global 500m"
+            }
+          },
+          "expression": "1 - img1"
+        }
+      ]
+    },
+    {
+      "title": "MCD43A2 BRDF-Albedo Quality 16-Day Global 500m",
+      "originaltitle": null,
+      "overlayvisible": false,
+      "vis": {
+        "opacity": 0.49,
+        "bands": [
+          "BRDF_Albedo_Quality"
+        ],
+        "max": 1,
+        "palette": [
+          "44ff15",
+          "ff300f"
+        ]
+      },
+      "layermode": "advisory-mode",
+      "datatype": "temporalcollection",
+      "periodstart": 1446336000000,
+      "periodend": 1447027200000,
+      "id": "MODIS/MCD43A2",
+      "assetid": "MODIS/MCD43A2/MCD43A2_005_2015_11_01"
+    },
+    {
+      "title": "MODIS 16-Day NDVI",
+      "originaltitle": null,
+      "overlayvisible": false,
+      "vis": {
+        "opacity": 1,
+        "bands": [
+          "NDVI"
+        ],
+        "min": 0,
+        "palette": [
+          "FFFFFF",
+          "CE7E45",
+          "DF923D",
+          "F1B555",
+          "FCD163",
+          "99B718",
+          "74A901",
+          "66A000",
+          "529400",
+          "3E8601",
+          "207401",
+          "056201",
+          "004C00",
+          "023B01",
+          "012E01",
+          "011D01",
+          "011301"
+        ],
+        "max": 1,
+        "name": "Colorized"
+      },
+      "layermode": "advisory-mode",
+      "datatype": "temporalcollection",
+      "periodstart": 1446336000000,
+      "periodend": 1447027200000,
+      "id": "MODIS/MCD43A4_NDVI",
+      "assetid": "MODIS/MCD43A4_NDVI/MCD43A4_005_2015_11_01"
+    }
+  ],
+  "drawnpoints": [],
+  "drawnpolys": [],
+  "analysis": null
+}
+}
+```

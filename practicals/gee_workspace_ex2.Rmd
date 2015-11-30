@@ -1,0 +1,169 @@
+---
+title: "GEE Workspace tutorial - Create a slope map for the alpine arc"
+author: "Damien g."
+date: "26/11/2015"
+output: html_document
+---
+
+## Tutorial walkthrough
+
+### Note
+
+This is a good idea to think to save the state of your workspace time to time.
+
+### Load the SRTM 30m digital elevation product
+
+Click on *add data*  
+
+![](../materials/figures/pract_workspace2/Screenshot02.png)
+
+Search for *SRTM elevation*, click on the *SRTM 30m digital elevation Data* product
+
+![](../materials/figures/pract_workspace2/Screenshot03.png)
+
+Click on the *question mark* icon to get further information on the selected product.
+
+![](../materials/figures/pract_workspace2/Screenshot04.png)
+
+![](../materials/figures/pract_workspace2/Screenshot05.png)
+
+### Produce the slope and aspect maps
+
+Click on *add computation*
+
+![](../materials/figures/pract_workspace2/Screenshot06.png)
+
+Select *Slope and aspect*. Then select the elevation maps as reference. By default the visualization will be based on a combination both elevation and aspect (RGB). 
+
+![](../materials/figures/pract_workspace2/Screenshot08.png)
+
+![](../materials/figures/pract_workspace2/Screenshot09.png)
+
+
+### Display the slope map in a nice way
+
+To make it simpler we will here just focus only on the slope band.  
+Click on the *Slope and aspect product* on the left panel, select the Slope band, and setup the color scale to cover 100% of the slope range (0-90).
+
+![](../materials/figures/pract_workspace2/Screenshot10.png)
+
+Here we are on a grey-scale. 
+We can choose to define our own color-scale. You can for instance use the excellent website [http://colorbrewer2.org/](http://colorbrewer2.org/) to generate a html color-scale that suits you. 
+
+![](../materials/figures/pract_workspace2/Screenshot11.png)
+
+I choose here this color-scale:
+
+```html
+ffffcc,ffeda0,fed976,feb24c,fd8d3c,fc4e2a,e31a1c,bd0026,800026
+```
+
+You can easily set it clicking on *Palete* then on the *pen icon* and pasting your colors scale in hexadecimal format.
+
+![](../materials/figures/pract_workspace2/Screenshot13.png)
+
+You should now have something like:
+
+![](../materials/figures/pract_workspace2/Screenshot15.png)
+
+### Export an image of the slope map of alpine arc (as .jpg)
+
+Click on the slope map feature in the left panel, then click on the *downloading arrow*. Select the area, projection system and resolution that suits you and click on *Download*.
+
+![](../materials/figures/pract_workspace2/Screenshot16.png)
+
+A window will pop-up..
+
+![](../materials/figures/pract_workspace2/Screenshot17.png)
+
+Click *ok* ... You are done !!!
+
+**Note**: In case you didn't manage to make it or if you want to compare you results to mine you can use one of the following sections.
+
+## Link to the final workspace
+
+Here is the [link to the final workspace](https://explorer.earthengine.google.com/#workspace/wDkCpce1rJq)
+
+## JSON version of the final workspace
+
+Here is the Json version of the final workspace. You can copy this lines and import them in your workspace.
+
+```json
+{
+  "viewport": {
+    "zoom": 10,
+    "lat": 45.22267719962014,
+    "lng": 5.9161376953125
+  },
+  "name": "",
+  "classmodel": [],
+  "polylayers": [],
+  "datalayers": [
+    {
+      "title": "Computed layer: Slope And Aspect",
+      "originaltitle": null,
+      "overlayvisible": true,
+      "vis": {
+        "opacity": 0.51,
+        "bands": [
+          "slope"
+        ],
+        "max": 44,
+        "palette": [
+          "ffffcc",
+          "ffeda0",
+          "fed976",
+          "feb24c",
+          "fd8d3c",
+          "fc4e2a",
+          "e31a1c",
+          "bd0026",
+          "800026"
+        ],
+        "format": "png"
+      },
+      "layermode": "advisory-mode",
+      "datatype": "computed",
+      "computations": [
+        {
+          "title": "1. Slope And Aspect",
+          "operation": "TerrainSlopeAspect",
+          "layer": {
+            "image": {
+              "type": "Invocation",
+              "arguments": {
+                "id": "USGS/SRTMGL1_003"
+              },
+              "functionName": "Image.load"
+            },
+            "bands": [
+              "elevation"
+            ],
+            "title": "SRTM Digital Elevation Data 30m"
+          }
+        }
+      ]
+    },
+    {
+      "title": "SRTM Digital Elevation Data 30m",
+      "originaltitle": null,
+      "overlayvisible": false,
+      "vis": {
+        "opacity": 1,
+        "bands": [
+          "elevation"
+        ],
+        "min": 0,
+        "max": 6000,
+        "gamma": 1.6
+      },
+      "layermode": "advisory-mode",
+      "datatype": "image",
+      "assetid": "USGS/SRTMGL1_003"
+    }
+  ],
+  "drawnpoints": [],
+  "drawnpolys": [],
+  "analysis": null
+}
+```

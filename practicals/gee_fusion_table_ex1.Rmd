@@ -1,0 +1,193 @@
+---
+title: "GEE Fusion Table tutorial - Create a Fusion Table"
+author: "Damien g."
+date: "26/11/2015"
+output: html_document
+---
+
+## Tutorial walkthrough
+
+### Download/create a .csv file
+
+**note:** this file should contain at least sites locations (WGS84) and a numerical value that can be used as classifier (e.g. [this file](https://drive.google.com/open?id=0B9E3DXffjxAxMzlyOUdJNjRRa2s) where we should use elevation to classify sites)
+
+Download the [](https://drive.google.com/open?id=0B9E3DXffjxAxMzlyOUdJNjRRa2s) on your own computer
+
+![](../materials/figures/pract_fusion_table/Screenshot01.png)
+
+Such a window should pop-up.
+
+![](../materials/figures/pract_fusion_table/Screenshot02.png)
+
+Choose a suitable name and directory and save this file. 
+
+### Go to [Google Fusion Table web page](https://support.google.com/fusiontables/answer/2571232) and upload the .csv file
+
+Open [Google Fusion Table web page](https://support.google.com/fusiontables/answer/2571232).
+
+![](../materials/figures/pract_fusion_table/Screenshot03.png)
+
+Click on *create a fusion table* > *From this computer* , search for you .csv file and click *next*
+
+![](../materials/figures/pract_fusion_table/Screenshot04.png)
+
+Check that the table is correctly formatted and click *next*
+
+![](../materials/figures/pract_fusion_table/Screenshot05.png)
+
+You can add a short description of what this table is, contains, ... That should be helpful even more if you plan to share this table with collaborators. Click on *finish*.
+
+![](../materials/figures/pract_fusion_table/Screenshot06.png)
+
+![](../materials/figures/pract_fusion_table/Screenshot07.png)
+
+
+### define/check that location info are well defined
+
+Check that your sites location is done according to the longitude and latitudes you gave.
+
+Click *Edit* > *Change columns*
+
+![](../materials/figures/pract_fusion_table/Screenshot08.png)
+
+Define *site_name* variable as a *Text*
+
+![](../materials/figures/pract_fusion_table/Screenshot09.png)
+
+And *latitude* as a *Location*. Ensure that *longitue* is recognized as the complementary location (using *Two columns location* check-box)
+
+![](../materials/figures/pract_fusion_table/Screenshot10.png)
+
+Then save the modification and come back to the map. Check that your sites are correctly located on this map.
+
+![](../materials/figures/pract_fusion_table/Screenshot11.png)
+
+**note:** you can play with the way to display the sites via the filter option (e.g. display only locations having a elevation between 300m and 500m)
+
+![](../materials/figures/pract_fusion_table/Screenshot12.png)
+
+### make the FT available on the web
+
+Click on *Share* on the top right corner
+
+![](../materials/figures/pract_fusion_table/Screenshot13.png)
+
+Click on *modifier..* and select *Public*.
+
+![](../materials/figures/pract_fusion_table/Screenshot14.png)
+
+Copy the id of your fusion table in the address bar of your browser (only part after *docid=*). This is the id you will use to import the fusion table in GEE.
+
+![](../materials/figures/pract_fusion_table/Screenshot15.png)
+
+### try to import the FT in GEE workspace to be sure that it is working
+
+Go to your [GEE workspace](https://explorer.earthengine.google.com/#workspace).
+
+![](../materials/figures/pract_fusion_table/Screenshot16.png)
+
+Click on *add data* > *Fusion Table*
+
+![](../materials/figures/pract_fusion_table/Screenshot17.png)
+
+Paste you Fusion table id and load the table.
+
+![](../materials/figures/pract_fusion_table/Screenshot18.png)
+
+Choose a classification variable (e.g. elevation) and set up a classification that suits you.
+
+![](../materials/figures/pract_fusion_table/Screenshot19.png)
+
+You can then edit the classification to change names, color, ...
+
+![](../materials/figures/pract_fusion_table/Screenshot20.png)
+
+You are done !!!
+
+**Note**: In case you didn't manage to make it or if you want to compare you results to mine you can use one of the following sections.
+
+## Link to the final fusion table / workspace
+
+Here is the [link to the final fusion table](https://www.google.com/fusiontables/data?docid=1eEaV0k3lg2bQsJc-Pm3oIXNR-I4dfrYfV41cnMHM)
+Here is the [link to the final workspace](https://explorer.earthengine.google.com/#workspace/3H6c2_poIDP)
+
+## JSON version of the final workspace
+
+Here is the Json version of the final workspace. You can copy this lines and import them in your workspace.
+
+```json
+{
+  "viewport": {
+    "zoom": 3,
+    "lat": 66.79190947341799,
+    "lng": -51.15234375
+  },
+  "name": "",
+  "classmodel": [
+    {
+      "name": "< 100m",
+      "color": "d63000"
+    },
+    {
+      "name": "100m < ele < 200m",
+      "color": "98ff00"
+    },
+    {
+      "name": "200m < ele < 300m",
+      "color": "0B4A8B"
+    },
+    {
+      "name": "> 300m",
+      "color": "ffc82d"
+    }
+  ],
+  "polylayers": [
+    {
+      "title": "Fusion Table: itex_sites_sample",
+      "originaltitle": null,
+      "overlayvisible": true,
+      "layermode": "advisory-mode",
+      "datatype": "table",
+      "mapping": [
+        [
+          26,
+          0
+        ],
+        [
+          158,
+          1
+        ],
+        [
+          208,
+          2
+        ],
+        [
+          268,
+          2
+        ],
+        [
+          397,
+          3
+        ]
+      ],
+      "id": "1eEaV0k3lg2bQsJc-Pm3oIXNR-I4dfrYfV41cnMHM",
+      "class_column": "elevation",
+      "geometry_column": null
+    }
+  ],
+  "datalayers": [],
+  "drawnpoints": [
+    [],
+    [],
+    [],
+    []
+  ],
+  "drawnpolys": [
+    [],
+    [],
+    [],
+    []
+  ],
+  "analysis": null
+}
+```
